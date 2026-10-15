@@ -92,3 +92,32 @@ This is a personal project, so the workflow is simple: make a change on a branch
 ## License
 
 To be decided.
+
+## Application entry contract
+
+Applications are listed in `data/apps.json`. The build (`npm run build`) validates the list and generates `site/index.html`. An invalid entry fails the build and names the entry `id` and the broken field.
+
+Field rules:
+
+| Field | Rule |
+|---|---|
+| `id` | Matches `^[a-z][a-z0-9-]{1,39}$`. Unique across the array. |
+| `name` | Trimmed length 1-40. |
+| `description` | Trimmed length 1-160. |
+| `status` | One of `live`, `preview`, `unavailable`. |
+| `href` | Only for `live`. Absolute `https://` URL, or a root-relative path beginning with `/`. Never `javascript:` or `data:`. |
+| `mockup` | Required for `preview`; optional for `unavailable`; not used for `live`. A file name in `site/mockups/`, matching `^[a-z0-9][a-z0-9.-]*\.svg$`. |
+| `thumbnail` | Required for every status. A file name in `site/thumbnails/`, matching `^[a-z0-9][a-z0-9.-]*\.webp$`. WebP, 16:10, exported at 1280×800 pixels. |
+| `mockupAlt` | Optional string. |
+
+Fields not listed are ignored. An empty array (`[]`) is valid and shows "No applications yet".
+
+## Commands
+
+```bash
+npm run build                          # generate site/style.css and site/index.html
+npm run dev                            # rebuild on change while editing
+node --test tests/build-site.test.mjs  # run the build tests
+```
+
+Node.js 20 or later is needed for these commands. The served `site/` folder needs no Node.
