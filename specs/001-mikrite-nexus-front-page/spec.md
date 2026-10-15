@@ -13,7 +13,13 @@ Mikrite Nexus is the front page of the platform. It introduces the product by na
 
 ### Session 2026-10-15
 
-- Q: Should the page styling use plain CSS with custom properties, or Tailwind? → A: Plain CSS with custom properties (no CSS framework, no build step)
+- Q: Should the page styling use plain CSS with custom properties, or Tailwind? → A: Plain CSS with custom properties (no CSS framework, no build step) *(superseded)*
+- Q: Should the page styling use plain CSS with custom properties, or Tailwind? → A: Tailwind CSS v4 with daisyUI v5, compiled at build time into a static stylesheet. Owner decision; the constitution was amended to 1.1.0 to allow this build-time tooling.
+- Q: How should stakeholders reach the front page to review the mock-ups before it is deployed? → A: Local review only. Reviewers run the built site on their own machine; no hosted review URL is required for this feature.
+- Q: Should preview and unavailable boxes be reachable with the Tab key, even though they cannot be opened? → A: Yes. They are reachable and announced as disabled; activating them does nothing.
+- Q: How many applications should the front page be designed to handle without the layout breaking? → A: Design for up to 50 applications. The first delivery is expected to list at most three.
+- Q: Is it acceptable to use a placeholder logo and colour palette for the first review, with real brand assets added later? → A: Yes. The first review uses a placeholder mark and palette; brand values are swapped in later without a layout change.
+- Q: What is the largest total download the front page may need before images, on first load? → A: 100 KB, the page-weight budget set by the constitution.
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -43,7 +49,7 @@ A visitor sees a grid of boxes, each representing an application. They choose on
 **Acceptance Scenarios**:
 
 1. **Given** one or more applications are available, **When** the front page loads, **Then** one box is shown per application, each with a name and a short description.
-2. **Given** a box is visible, **When** the visitor activates it (click, tap, or keyboard), **Then** the visitor is taken to that application.
+2. **Given** a live box is visible, **When** the visitor activates it (click, tap, or keyboard), **Then** the visitor is taken to that application.
 3. **Given** a box is visible, **When** the visitor hovers over or focuses it, **Then** the box shows a clear visual highlight.
 
 ---
@@ -66,9 +72,9 @@ The product owner and stakeholders need to judge the front page before the appli
 
 ### Edge Cases
 
-- A large number of applications: the grid must remain usable (wrapping rows, no horizontal scrolling).
+- A large number of applications: the grid must remain usable with up to 50 applications (wrapping rows, no horizontal scrolling).
 - An application with a long name or description: text is truncated or wrapped without breaking the box layout.
-- An application that is unavailable: its box is still shown but marked as unavailable and cannot be activated.
+- An application that is unavailable: its box is still shown, marked as unavailable, reachable by keyboard and announced as disabled, and cannot be activated.
 - An application with no mock-up yet: its box shows a neutral placeholder marked as "Preview not available" rather than breaking the layout.
 - A visitor on a narrow phone screen: boxes stack in a single column with the same content.
 - A visitor who uses only the keyboard or a screen reader: every box is reachable and announces its name.
@@ -83,10 +89,10 @@ The product owner and stakeholders need to judge the front page before the appli
 - **FR-004**: Each application box MUST lead the visitor to its application when activated, provided the application is built and available.
 - **FR-005**: When no applications are listed, the front page MUST show a clear empty state in place of the application boxes.
 - **FR-006**: Each application that is not yet built MUST have a mock-up that is shown in its box, clearly labelled as a preview.
-- **FR-007**: Application mock-ups MUST be reviewable by stakeholders without any application being built or deployed.
+- **FR-007**: Application mock-ups MUST be reviewable by stakeholders without any application being built or deployed. For this feature, review is done locally from the built site; a hosted review URL is not required.
 - **FR-008**: When an application is built, its box MUST switch from the mock-up to the live application entry without a layout change.
 - **FR-009**: The layout MUST work on desktop and phone-sized screens without horizontal scrolling.
-- **FR-010**: Application boxes MUST be operable by keyboard and expose their name to assistive technology.
+- **FR-010**: Application boxes MUST be reachable by keyboard and expose their name to assistive technology. Live boxes MUST be activatable by keyboard. Preview and unavailable boxes MUST be announced as disabled and MUST do nothing when activated.
 - **FR-011**: The list of applications MUST be data-driven, so adding or removing an application does not require redesigning the page.
 
 ### Key Entities
@@ -103,10 +109,10 @@ The product owner and stakeholders need to judge the front page before the appli
 
 ## Assumptions
 
-- The first delivery is the front page with mock-ups for each listed application; the applications themselves will be built later.
+- The first delivery is the front page with mock-ups for each listed application; the applications themselves will be built later. The first delivery is expected to list at most three applications, while the design supports up to 50.
 - Application boxes are shown in a single flat grid; no categories or ordering rules are required in this iteration.
 - The description is written by the product owner and is not user-editable on the page.
-- Visual styling uses plain CSS with custom properties, with no CSS framework (see Clarifications). Colours, typography and imagery are refined in the planning phase.
+- Visual styling uses Tailwind CSS v4 with daisyUI v5, compiled at build time into a static stylesheet, with no client-side JavaScript (see Clarifications). Colours, typography and imagery are refined in the planning phase. The first review uses a placeholder logo mark and colour palette (see Clarifications).
 
 ## Success Criteria *(mandatory)*
 
@@ -115,12 +121,13 @@ The product owner and stakeholders need to judge the front page before the appli
 - **SC-001**: A first-time visitor can state what Mikrite Nexus is within 10 seconds of the page loading.
 - **SC-002**: The title, description and application area are fully visible without scrolling on a common desktop screen and a common phone screen.
 - **SC-003**: Stakeholders can review every application's mock-up on the front page with no application built.
-- **SC-004**: Every application box can be reached and activated using only the keyboard.
-- **SC-005**: Adding an application entry requires no change to the page layout.
+- **SC-004**: Every application box can be reached using only the keyboard; every live box can be activated with the keyboard, and every preview or unavailable box is announced as disabled.
+- **SC-005**: Adding an application entry requires no change to the page layout, up to 50 applications.
+- **SC-006**: On first load, the page transfers no more than 100 KB before images.
 
 ## Open Questions for Planning
 
 - Target platform and technology stack for the front page.
 - Where application entries and their mock-ups are stored and how they are added.
 - Format of the mock-ups (static images, clickable prototypes, or screenshots).
-- Brand assets (logo, colour palette) to use in the design.
+- Brand assets (logo, colour palette) to replace the placeholders once they are provided.
