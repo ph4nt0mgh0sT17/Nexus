@@ -2,35 +2,43 @@
 
 Nexus is the main entry point to my ecosystem of applications. It is a lightweight hub page that gives one place to find and launch every app, rather than a tool with features of its own.
 
-The hub is intentionally simple: plain HTML and CSS, with a small amount of JavaScript only where it adds real value (for example, filtering or searching the app list). There is no build step, no framework, and no backend.
+The hub is a static page. It is generated at build time from one list of applications, and it ships no client-side JavaScript. There is no backend and no runtime data fetching.
 
 ## Purpose
 
 - Provide a single landing page for all related applications.
 - Give each app a consistent card with a name, short description, and link.
-- Stay easy to maintain: adding or removing an app is a matter of editing one list.
+- Stay easy to maintain: adding or removing an app means editing one list, `data/apps.json`.
 
 ## Tech stack
 
 - **HTML5** for structure
-- **CSS3** for layout and theming (custom properties, CSS Grid/Flexbox, responsive design)
-- **Vanilla JavaScript** (optional) for small enhancements such as search or filtering
-- No dependencies, bundlers, or package managers required
+- **Tailwind CSS v4 with daisyUI v5**, compiled at build time into one static stylesheet. These are the only build-time tools, pinned to exact versions.
+- **Node.js 20 or later** for the build only. The served site needs no Node.
+- No client-side JavaScript, frameworks, or runtime dependencies.
+
+The choice of Tailwind and daisyUI is recorded in [specs/001-mikrite-nexus-front-page/tech-stack-decisions.md](specs/001-mikrite-nexus-front-page/tech-stack-decisions.md).
 
 ## Project structure
 
-The project is planned to grow into roughly this layout:
-
 ```
 Nexus/
-├── index.html      # Hub page: header, app grid, footer
-├── css/
-│   └── styles.css  # All styling, theme variables, responsive rules
-├── js/
-│   └── apps.js     # Optional: app list data and small UI behavior
-├── README.md
-└── .specify/       # Spec-driven development templates (not part of the site)
+├── data/apps.json            # The application list (the only file to edit to add an app)
+├── src/
+│   ├── index.template.html   # Page template
+│   └── input.css             # Tailwind and daisyUI source
+├── scripts/build-site.mjs    # Validates data/apps.json and generates site/
+├── site/                     # The built site (see below)
+├── deploy/nginx/             # nginx server block and security headers snippet
+├── tests/                    # Build tests
+├── specs/                    # Feature specifications and plans
+├── .specify/                 # Project constitution and spec-driven templates
+├── DEPLOYMENT.md             # How the site is released and deployed
+├── SECURITY.md               # Security policy and rules for secrets
+└── README.md
 ```
+
+In `site/`, the generated files `index.html` and `style.css` are not committed. The thumbnails and mockups are source assets and are committed.
 
 ## Running locally
 
@@ -48,7 +56,7 @@ You need Node.js 20 or later (LTS) from nodejs.org, which includes npm. Check wi
    npm run build
    ```
 
-3. Serve the `site/` folder with any static server. Opening `site/index.html` directly from disk does not load the stylesheet reliably, so use a server. For example, with Node:
+3. Serve the `site/` folder with any static server. Opening `site/index.html` directly from disk does not load the stylesheet reliably, so use a server. For example:
 
    ```bash
    npx http-server site -p 8080
@@ -58,51 +66,48 @@ You need Node.js 20 or later (LTS) from nodejs.org, which includes npm. Check wi
 
 To rebuild automatically while you edit `data/apps.json`, `src/` or `scripts/`, run `npm run dev` instead of step 2 and keep it running.
 
-Docker is optional. It is only a way to match the production nginx setup, and `site/` can be served by any static server.
+Docker is optional. It is only a way to test the production nginx config locally. See "Testing in Docker" in [DEPLOYMENT.md](DEPLOYMENT.md).
 
 ## Adding an application
 
-Each app appears on the hub as one entry. Once the app list lives in `js/apps.js` (or directly in `index.html`), add an entry in this shape:
+Applications are listed in `data/apps.json`. Add one object with the fields in the table below, then run `npm run build`. The build checks each entry and names the entry `id` and the broken field if something is wrong.
 
-```js
-{
-  name: "App Name",
-  description: "One-sentence summary of what the app does.",
-  url: "https://example.com/app-name/",   // or a relative path for apps in this repo
-  icon: "🧩",                              // optional emoji or image path
-  status: "live"                           // e.g. "live", "beta", "coming-soon"
-}
-```
+A `live` entry must link to a working address. Check it before each release, as described in [DEPLOYMENT.md](DEPLOYMENT.md).
 
 Guidelines:
 
 - Keep descriptions to one sentence.
-- Use `coming-soon` for apps that are planned but not yet available; render them as disabled cards.
+- Use `preview` for an app that is planned, with a labelled mock-up instead of a link.
 - Link to each app's own URL. The hub should not duplicate app logic.
 
 ## Design principles
 
-- **Fast:** no external requests required to render the page.
-- **Accessible:** semantic HTML, keyboard-navigable links, sufficient color contrast, and respect for `prefers-reduced-motion`.
+- **Fast:** no external requests are needed to render the page.
+- **Accessible:** semantic HTML, keyboard-navigable links, WCAG 2.2 AA contrast, visible focus, and respect for `prefers-reduced-motion`.
 - **Responsive:** the app grid adapts from one column on phones to several on desktop.
 - **Themeable:** colors and spacing are defined as CSS custom properties, with light and dark variants via `prefers-color-scheme`.
 
+The full rules are in the constitution at [.specify/memory/constitution.md](.specify/memory/constitution.md).
+
 ## Deployment
 
-The hub is static and is served by nginx on a Debian VPS. Releases are built on the development machine and published as tarballs on GitHub Releases. The server downloads and extracts them by hand. See [DEPLOYMENT.md](DEPLOYMENT.md) for the full process.
+The hub is static and is served by nginx on a Debian 13 VPS. Releases are built on the development machine and published as tarballs on GitHub Releases. The server downloads and extracts them by hand. There is no CI/CD for now.
+
+See [DEPLOYMENT.md](DEPLOYMENT.md) for the full process, and [SECURITY.md](SECURITY.md) for how to report a vulnerability.
 
 ## Roadmap
 
-- [ ] Create `index.html` with header, app grid, and footer
-- [ ] Add base styles and light/dark theme in `css/styles.css`
-- [ ] Move the app list into `js/apps.js`
-- [ ] Add search or filtering for the app grid
-- [ ] Add a "coming soon" state for planned apps
-- [ ] Deploy to a static host
+- [x] Front page with the app grid, light and dark themes, and the build pipeline (spec 001)
+- [ ] Choose and register a domain
+- [ ] Set up the VPS and deploy the first release
+- [ ] Enable HTTPS
+- [ ] Put the first application live (the first app is currently a `preview`)
 
 ## Contributing
 
-This is a personal project, so the workflow is simple: make a change on a branch, check it in a browser at desktop and phone widths, then merge into `main`.
+This is a personal project. Make each change on a branch, and merge it into `main` through a pull request. Before merging, check the change at phone width (375px) and desktop width (1280px), in light and dark color schemes. The constitution in `.specify/memory/constitution.md` sets the rules for review.
+
+Never commit secrets, tokens or keys. The repository is public. See [SECURITY.md](SECURITY.md).
 
 ## License
 
