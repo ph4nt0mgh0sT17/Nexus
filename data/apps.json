@@ -1,0 +1,26 @@
+[
+  {
+    "id": "tasks",
+    "name": "Tasks",
+    "description": "Plan, track and finish the work you have in hand.",
+    "status": "preview",
+    "mockup": "tasks.svg",
+    "thumbnail": "tasks.webp"
+  },
+  {
+    "id": "notes",
+    "name": "Notes",
+    "description": "Quick capture for ideas that are not ready to become tasks.",
+    "status": "preview",
+    "mockup": "notes.svg",
+    "thumbnail": "notes.webp"
+  },
+  {
+    "id": "archive",
+    "name": "Archive",
+    "description": "Store finished and reference material so it stays easy to find.",
+    "status": "preview",
+    "mockup": "archive.svg",
+    "thumbnail": "archive.webp"
+  }
+]

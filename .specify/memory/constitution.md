@@ -1,3 +1,17 @@
+<!--
+Sync Impact Report
+- Version change: 1.0.0 -> 1.1.0 (MINOR: Technology and Quality Constraints materially expanded)
+- Sections amended: Principle III (Maintainability), Principle V (Architectural Simplicity),
+  Technology and Quality Constraints, Governance (version line)
+- Rationale: The owner chose Tailwind CSS v4 with daisyUI v5 (see
+  specs/001-mikrite-nexus-front-page/tech-stack-decisions.md) for the front page, accepting a
+  build step for the stylesheet only. The amendment limits this to styling tooling at build time.
+- Impact on existing applications: None. No application exists yet.
+- Impact on templates under .specify/: The plan template's Constitution Check must reference
+  this amendment for the Tailwind build step.
+- Approval: Repository owner.
+-->
+
 # Nexus Constitution
 
 Nexus is the static hub that leads to the rest of the ecosystem of applications. The hub is
@@ -41,8 +55,9 @@ Behavior MUST be verified before it is considered done, and verification MUST be
 
 The codebase MUST remain easy to change by someone who did not write it.
 
-- Each concern MUST live in one place: markup in `index.html`, styling in `css/`, data and
-  behavior in `js/`. Duplicating a value across files is a defect.
+- Each concern MUST live in one place: markup in `site/index.html`, styling source in `src/`
+  (compiled to `site/style.css`), application data in `data/`, and behavior in `js/` only when a
+  requirement cannot be met statically. Duplicating a value across files is a defect.
 - Visual values (colors, spacing, font sizes) MUST be defined as CSS custom properties and
   referenced by name.
 - Dependencies MUST be avoided by default. A new dependency MUST be justified in the pull
@@ -78,7 +93,8 @@ The simplest architecture that meets the current requirements MUST be preferred.
 MUST be justified by a present need, not an anticipated one.
 
 - A new layer (framework, build tool, state store, router) MUST NOT be introduced until a
-  requirement cannot be met by the existing plain HTML, CSS, and JavaScript.
+  requirement cannot be met by the existing plain HTML, CSS, and JavaScript. The one approved
+  exception is the styling build defined in Technology and Quality Constraints.
 - Module boundaries MUST follow the ecosystem's real seams: the hub knows an application's
   name, description, link, and status, and nothing else.
 - Shared behavior between applications MUST be introduced only after it exists in at least
@@ -88,8 +104,15 @@ MUST be justified by a present need, not an anticipated one.
 
 ## Technology and Quality Constraints
 
-- The hub MUST be built with HTML5, CSS3, and vanilla JavaScript. Any other technology requires
-  an amendment to this section.
+- The hub MUST be built with HTML5 and CSS3. Styling MUST use Tailwind CSS v4 with daisyUI v5,
+  compiled at build time by the Tailwind CLI into a single static stylesheet. Tailwind and
+  daisyUI are the only approved build-time tools; they MUST be pinned to exact versions and MUST
+  NOT be loaded from a CDN in the served page.
+- Vanilla JavaScript MAY be added only where a requirement cannot be met statically, with a
+  recorded reason. The hub currently ships no client-side JavaScript. Any other technology
+  requires an amendment to this section.
+- Application data (the app list) MUST live in a source file that is compiled into the static
+  output at build time. The served page MUST NOT fetch application data at runtime.
 - The hub MUST work in the current stable release and the previous major release of Chrome,
   Edge, Firefox, and Safari.
 - The hub MUST be keyboard-operable and meet WCAG 2.2 AA for contrast and focus visibility.
@@ -136,4 +159,4 @@ or comment conflicts with it, this constitution prevails.
 principles. Periodic reviews (at least once per quarter) SHOULD check that the hub still meets
 the performance budget and that all listed applications resolve.
 
-**Version**: 1.0.0 | **Ratified**: 2026-10-15 | **Last Amended**: 2026-10-15
+**Version**: 1.1.0 | **Ratified**: 2026-10-15 | **Last Amended**: 2026-10-15
