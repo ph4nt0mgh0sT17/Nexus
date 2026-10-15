@@ -2,7 +2,7 @@
 
 **Feature Branch**: `001-mikrite-nexus-front-page`
 **Created**: 2026-10-15
-**Status**: Draft
+**Status**: Done (2026-10-15). Implemented and merged for review; three verification tasks are still open and are listed in [tasks.md](tasks.md): T036 (1280 px layout), T037 (Lighthouse, contrast and keyboard audit), T046 (theme switch at 1280 px). Any gaps found there go into a new spec.
 **Input**: User description: "Build a front page, let's call it Mikrite Nexus. It will contain the main title, a little description and boxes of applications it can lead to. Of course there will be nothing at the start so mock-up will be needed. The technical aspects of this specification will be discussed in planning phase."
 
 ## Overview
