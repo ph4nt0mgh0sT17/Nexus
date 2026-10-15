@@ -38,6 +38,8 @@ docker run --rm -p 8080:80 -v "$PWD/site:/usr/share/nginx/html:ro" nginx:alpine
 
 Open `http://localhost:8080`. Saving a file rebuilds the output; refresh the browser. The container reads from disk and does not need restarting.
 
+This command uses nginx's default config. To test the production config and its cache and security headers, follow the "Testing in Docker" chapter in [DEPLOYMENT.md](../../DEPLOYMENT.md).
+
 ## 3. Check the content (FR-001, FR-002, SC-001)
 
 - The title "Mikrite Nexus" is the largest text on the page.

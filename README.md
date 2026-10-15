@@ -89,7 +89,7 @@ Guidelines:
 
 ## Deployment
 
-Because the hub is static, it can be hosted on any static host, such as GitHub Pages, Netlify, or Cloudflare Pages. Publish the repository root (or a `docs/` folder if preferred) and point a domain at it when ready.
+The hub is static and is served by nginx on a Debian VPS. Releases are built on the development machine and published as tarballs on GitHub Releases. The server downloads and extracts them by hand. See [DEPLOYMENT.md](DEPLOYMENT.md) for the full process.
 
 ## Roadmap
 
