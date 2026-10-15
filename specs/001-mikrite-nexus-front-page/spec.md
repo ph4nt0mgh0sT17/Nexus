@@ -9,6 +9,12 @@
 
 Mikrite Nexus is the front page of the platform. It introduces the product by name, explains in a few words what it is, and presents a set of boxes, each one a gateway to an application the platform can lead to. The applications behind the boxes are not built yet. Until they are, each box shows a mock-up of its application so visitors and stakeholders can see what the destination will be. The front page itself does not need a separate mock-up.
 
+## Clarifications
+
+### Session 2026-10-15
+
+- Q: Should the page styling use plain CSS with custom properties, or Tailwind? → A: Plain CSS with custom properties (no CSS framework, no build step)
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Understand what Mikrite Nexus is (Priority: P1)
@@ -100,7 +106,7 @@ The product owner and stakeholders need to judge the front page before the appli
 - The first delivery is the front page with mock-ups for each listed application; the applications themselves will be built later.
 - Application boxes are shown in a single flat grid; no categories or ordering rules are required in this iteration.
 - The description is written by the product owner and is not user-editable on the page.
-- Visual styling (colours, typography, imagery) is refined in the planning phase.
+- Visual styling uses plain CSS with custom properties, with no CSS framework (see Clarifications). Colours, typography and imagery are refined in the planning phase.
 
 ## Success Criteria *(mandatory)*
 
