@@ -1,0 +1,120 @@
+# Feature Specification: Mikrite Nexus Front Page
+
+**Feature Branch**: `001-mikrite-nexus-front-page`
+**Created**: 2026-10-15
+**Status**: Draft
+**Input**: User description: "Build a front page, let's call it Mikrite Nexus. It will contain the main title, a little description and boxes of applications it can lead to. Of course there will be nothing at the start so mock-up will be needed. The technical aspects of this specification will be discussed in planning phase."
+
+## Overview
+
+Mikrite Nexus is the front page of the platform. It introduces the product by name, explains in a few words what it is, and presents a set of boxes, each one a gateway to an application the platform can lead to. The applications behind the boxes are not built yet. Until they are, each box shows a mock-up of its application so visitors and stakeholders can see what the destination will be. The front page itself does not need a separate mock-up.
+
+## User Scenarios & Testing *(mandatory)*
+
+### User Story 1 - Understand what Mikrite Nexus is (Priority: P1)
+
+A first-time visitor lands on the front page and immediately sees the product name, a short description, and what they can do next.
+
+**Why this priority**: Without a clear title and description the page has no purpose. This is the minimum viable front page.
+
+**Independent Test**: Load the page with no applications configured. The title "Mikrite Nexus" and the description are visible above the fold on a desktop and on a phone-sized screen.
+
+**Acceptance Scenarios**:
+
+1. **Given** a visitor opens the front page, **When** the page finishes loading, **Then** the main title "Mikrite Nexus" is the most prominent text on the page.
+2. **Given** a visitor opens the front page, **When** they read the page, **Then** a short description (one to two sentences) explains what Mikrite Nexus is.
+
+---
+
+### User Story 2 - Choose an application from the boxes (Priority: P2)
+
+A visitor sees a grid of boxes, each representing an application. They choose one and are taken to it.
+
+**Why this priority**: The boxes are the navigation hub of the front page. They are the reason the page exists beyond branding.
+
+**Independent Test**: Configure at least two sample applications. Each box shows a name, a short description and an entry point. Selecting a box opens its application.
+
+**Acceptance Scenarios**:
+
+1. **Given** one or more applications are available, **When** the front page loads, **Then** one box is shown per application, each with a name and a short description.
+2. **Given** a box is visible, **When** the visitor activates it (click, tap, or keyboard), **Then** the visitor is taken to that application.
+3. **Given** a box is visible, **When** the visitor hovers over or focuses it, **Then** the box shows a clear visual highlight.
+
+---
+
+### User Story 3 - Preview applications that are not built yet (Priority: P3)
+
+The product owner and stakeholders need to judge the front page before the applications behind the boxes exist. Each box shows a mock-up of its application, so the page can be reviewed and approved with the real content in place.
+
+**Why this priority**: The page is designed ahead of its destinations. Mock-ups of each application must be defined and reviewable now.
+
+**Independent Test**: With applications listed but not built, each box shows a clearly labelled mock-up of its application. A stakeholder can review every box without opening a live application.
+
+**Acceptance Scenarios**:
+
+1. **Given** an application is listed but not built, **When** the front page loads, **Then** its box shows a mock-up of that application, labelled as a preview (for example "Preview - coming soon").
+2. **Given** an application is built, **When** the front page loads, **Then** its box shows the live application entry instead of the mock-up.
+3. **Given** no applications are listed, **When** the front page loads, **Then** the application area shows an empty state message (for example "No applications yet") instead of an empty grid.
+
+---
+
+### Edge Cases
+
+- A large number of applications: the grid must remain usable (wrapping rows, no horizontal scrolling).
+- An application with a long name or description: text is truncated or wrapped without breaking the box layout.
+- An application that is unavailable: its box is still shown but marked as unavailable and cannot be activated.
+- An application with no mock-up yet: its box shows a neutral placeholder marked as "Preview not available" rather than breaking the layout.
+- A visitor on a narrow phone screen: boxes stack in a single column with the same content.
+- A visitor who uses only the keyboard or a screen reader: every box is reachable and announces its name.
+
+## Requirements *(mandatory)*
+
+### Functional Requirements
+
+- **FR-001**: The front page MUST display the main title "Mikrite Nexus".
+- **FR-002**: The front page MUST display a short description of the product (one to two sentences).
+- **FR-003**: The front page MUST display one box per listed application, each showing the application's name and a short description.
+- **FR-004**: Each application box MUST lead the visitor to its application when activated, provided the application is built and available.
+- **FR-005**: When no applications are listed, the front page MUST show a clear empty state in place of the application boxes.
+- **FR-006**: Each application that is not yet built MUST have a mock-up that is shown in its box, clearly labelled as a preview.
+- **FR-007**: Application mock-ups MUST be reviewable by stakeholders without any application being built or deployed.
+- **FR-008**: When an application is built, its box MUST switch from the mock-up to the live application entry without a layout change.
+- **FR-009**: The layout MUST work on desktop and phone-sized screens without horizontal scrolling.
+- **FR-010**: Application boxes MUST be operable by keyboard and expose their name to assistive technology.
+- **FR-011**: The list of applications MUST be data-driven, so adding or removing an application does not require redesigning the page.
+
+### Key Entities
+
+- **Front Page**: The landing page of Mikrite Nexus. Attributes: title, description, list of application entries, empty-state message.
+- **Application Entry**: An application the platform can lead to. Attributes: name, short description, destination, availability status, mock-up (required until the application is built).
+
+## Out of Scope
+
+- Accounts, sign-in and personalisation.
+- The content and behaviour of the applications the boxes lead to.
+- Building the applications themselves; this spec only requires their mock-ups.
+- Technical stack, hosting, data sources and integration details (to be decided in the planning phase).
+
+## Assumptions
+
+- The first delivery is the front page with mock-ups for each listed application; the applications themselves will be built later.
+- Application boxes are shown in a single flat grid; no categories or ordering rules are required in this iteration.
+- The description is written by the product owner and is not user-editable on the page.
+- Visual styling (colours, typography, imagery) is refined in the planning phase.
+
+## Success Criteria *(mandatory)*
+
+### Measurable Outcomes
+
+- **SC-001**: A first-time visitor can state what Mikrite Nexus is within 10 seconds of the page loading.
+- **SC-002**: The title, description and application area are fully visible without scrolling on a common desktop screen and a common phone screen.
+- **SC-003**: Stakeholders can review every application's mock-up on the front page with no application built.
+- **SC-004**: Every application box can be reached and activated using only the keyboard.
+- **SC-005**: Adding an application entry requires no change to the page layout.
+
+## Open Questions for Planning
+
+- Target platform and technology stack for the front page.
+- Where application entries and their mock-ups are stored and how they are added.
+- Format of the mock-ups (static images, clickable prototypes, or screenshots).
+- Brand assets (logo, colour palette) to use in the design.
