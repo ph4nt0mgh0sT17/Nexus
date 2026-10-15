@@ -1,6 +1,8 @@
 # Deployment Discussion: Mikrite Nexus Front Page
 
 **Status**: Open. Some requirements are decided (below). The rest is parked for a future session.
+
+**On hold**: Deployment is not moving forward yet. No deployment work (server setup, release layout, HTTPS, domain) starts until this hold is lifted. Recorded 2026-10-15.
 **Date opened**: 2026-10-15 | **Plan**: [plan.md](specs/001-mikrite-nexus-front-page/plan.md) | **Guide**: [DEPLOYMENT.md](DEPLOYMENT.md)
 
 Points to settle before the first release. The plan does not depend on the answers; they only affect how the built `site/` folder reaches the server.
