@@ -32,9 +32,17 @@ color, not by decoration.
 ## Color tokens
 
 Defined once in `src/input.css` as a custom daisyUI theme pair (`nexus-light` default,
-`nexus-dark` with `prefers-darkscheme`). Tailwind's `@theme` exposes the same values as CSS
-custom properties, so layout utilities and any custom CSS reference the same tokens. Values use
+`nexus-dark` with `prefersdark: true`). Tailwind's `@theme` exposes the non-colour tokens. Values use
 `oklch()` for perceptually even steps; Tailwind v4 and the target browsers support it.
+
+Each theme block also carries the two non-daisyUI tokens that change with the scheme, so no
+separate media rules are needed:
+
+- `--nexus-muted`: the muted text colour (table below).
+- `--shadow-card`: subtle in light, `none` in dark.
+
+Which theme applies is decided by daisyUI's `theme-controller` (see the theme switch below), not
+by `prefers-color-scheme` alone.
 daisyUI's stock themes are not used.
 
 Token names below are the daisyUI names (`base-100`, `primary`, ...) mapped to the design
@@ -78,8 +86,13 @@ darken the light value by 2-3 lightness points rather than changing the hue.
 
 ## Layout
 
-- **Header**: node mark and wordmark "Mikrite Nexus" on the left. No navigation (the page is
-  the hub; no nav is in scope).
+- **Header**: node mark and wordmark "Mikrite Nexus" on the left, and the theme switch on the
+  right. No navigation (the page is the hub; no nav is in scope). On phones the switch sits on
+  the same row and must fit beside the wordmark at 375 px.
+- **Theme switch**: a segmented control with two options, Light and Dark, in a `fieldset` with a
+  visually hidden legend "Theme". Each option is a native radio input, so the arrow keys move
+  between options. The checked option uses the `primary` fill; focus uses the standard focus ring
+  on the option. Neither option is checked by default, so the page follows the device setting. In that state the option matching the device setting (Light on a light device, Dark on a dark device) is shown as active, so the visible selection always matches the theme in use.
 - **Hero**: title, description, and a visible scroll cue only if the grid starts below the fold.
   The title and description must sit fully above the fold on 1280x720 and 375x667 (SC-002).
 - **Application grid**: `display: grid` with
@@ -130,6 +143,8 @@ same 16:10 size, so the layout does not break (spec edge case).
 - Live cards are `<a>` elements whose accessible name is the app name.
 - Preview and unavailable cards are plain focusable elements: a `<div>` with `tabindex="0"`, `aria-disabled="true"` and `aria-describedby` pointing to the status text. They have no link role and no `href`.
 - Status is text, not color alone (the chip has a label).
+- The theme switch is a labelled radio group. Its options have visible text ("Light", "Dark"),
+  and the checked state is readable without colour.
 
 ## Brand (open)
 

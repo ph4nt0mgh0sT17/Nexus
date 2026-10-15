@@ -34,16 +34,31 @@ Nexus/
 
 ## Running locally
 
-No installation is needed. Either:
+You need Node.js 20 or later (LTS) from nodejs.org, which includes npm. Check with `node -v` and `npm -v`.
 
-1. Open `index.html` directly in a browser, or
-2. Serve the folder with any static server so relative paths behave as they would when hosted. For example, with Python 3:
+1. Install the build tools once, from the repository root:
 
    ```bash
-   python -m http.server 8000
+   npm install
    ```
 
-   Then visit `http://localhost:8000`.
+2. Build the site:
+
+   ```bash
+   npm run build
+   ```
+
+3. Serve the `site/` folder with any static server. Opening `site/index.html` directly from disk does not load the stylesheet reliably, so use a server. For example, with Node:
+
+   ```bash
+   npx http-server site -p 8080
+   ```
+
+   Then visit `http://localhost:8080`.
+
+To rebuild automatically while you edit `data/apps.json`, `src/` or `scripts/`, run `npm run dev` instead of step 2 and keep it running.
+
+Docker is optional. It is only a way to match the production nginx setup, and `site/` can be served by any static server.
 
 ## Adding an application
 

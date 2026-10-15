@@ -8,7 +8,7 @@
 
 A single static page: title, a short description, and a grid of application cards generated from data at build time. Each card is `live` (links to the app), `preview` (shows a labelled SVG mock-up, not a link), or `unavailable`. The served page is plain HTML with a Tailwind CSS v4 + daisyUI v5 stylesheet and ships no JavaScript. nginx serves the static files.
 
-Design direction, "a hub with spokes": a modern, high-contrast look built from a custom daisyUI light and dark theme, a fluid type scale, an auto-fill card grid that stacks on phones without breakpoints, and restrained motion. See [design.md](design.md).
+Design direction, "a hub with spokes": a modern, high-contrast look built from a custom daisyUI light and dark theme, with a header switch so visitors can pick Light or Dark, a fluid type scale, an auto-fill card grid that stacks on phones without breakpoints, and restrained motion. See [design.md](design.md).
 
 The owner approved Tailwind + daisyUI and a constitution amendment (version 1.1.0) on 2026-10-15. The amendment also resolves the no-JavaScript question: a build-time generator turns the data file into static markup, so FR-011 is met without client code.
 
@@ -35,7 +35,9 @@ The owner approved Tailwind + daisyUI and a constitution amendment (version 1.1.
 - No runtime data fetching; no client framework; no web fonts; no analytics.
 - Phone width 375 px with a 16 px gutter and no horizontal scroll (FR-009).
 - Keyboard operable; WCAG 2.2 AA contrast and focus visibility.
-- Respects `prefers-color-scheme` and `prefers-reduced-motion`.
+- Respects `prefers-color-scheme` by default, and offers a Light / Dark theme switch, unset by default, built with daisyUI `theme-controller` radio inputs (no JavaScript; FR-014, FR-015).
+- Respects `prefers-reduced-motion`.
+- The page links `style.css?v={hash}`, where the hash is computed from the generated stylesheet at build time, so browsers fetch a changed stylesheet ([research.md](research.md) §5a).
 
 **Scale/Scope**: 2-3 entries at launch; layout must stay usable with 50 or more (constitution Principle IV).
 
@@ -54,6 +56,7 @@ The owner approved Tailwind + daisyUI and a constitution amendment (version 1.1.
 | Dependencies (Principle III) | Pass | Tailwind and daisyUI justified by [tech-stack-decisions.md](tech-stack-decisions.md) and the 1.1.0 amendment. No other dependency. |
 | Third-party assets | Pass | None loaded in the page. |
 | Analytics and personal data | Pass | None collected. |
+| Theme switch (added 2026-10-15) | Pass | Two radio inputs styled as a segmented control, wired to daisyUI `theme-controller`. A requirement that can be met statically is met statically, so no JavaScript is added and the constitution is not amended. Choice is not stored between visits ([research.md](research.md) §5). |
 
 **Gate result**: Pass. The styling-stack gate is resolved by the constitution amendment.
 
@@ -119,6 +122,6 @@ README.md                      # Adds the app entry contract section (Principle 
 ## Open Decisions (not blocking tasks)
 
 1. **Generated output committed** (`site/index.html`, `site/style.css`): decided as committed, to keep the server Node-free. Revisit if generated diffs cause merge noise.
-2. **Production deployment and HTTPS**: open. Deployment model, server OS, domain, HTTPS and nginx configuration are parked in [deployment-discussion.md](deployment-discussion.md). They do not affect this plan's design.
+2. **Production deployment and HTTPS**: open. Deployment model, server OS, domain, HTTPS and nginx configuration are parked in [deployment-discussion.md](../../deployment-discussion.md). They do not affect this plan's design.
 3. **Brand assets**: none provided. Placeholder mark and palette are used; swap the theme values in `src/input.css` when real assets exist.
 4. **Spec clarification**: resolved. [spec.md](spec.md) Clarifications keep the superseded plain-CSS answer marked as such, and Assumptions now state Tailwind CSS v4 with daisyUI v5.

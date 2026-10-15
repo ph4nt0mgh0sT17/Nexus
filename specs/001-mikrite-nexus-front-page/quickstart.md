@@ -66,6 +66,16 @@ Use DevTools device emulation:
 
 Repeat both widths with light and dark color schemes (DevTools "Rendering" panel, or `prefers-color-scheme` emulation).
 
+## 5a. Check the theme switch (FR-014, FR-015)
+
+- With the device set to light, neither option is checked and the page is light.
+- With the device set to dark, neither option is checked and the page is dark.
+- Click Light: the page is light, whatever the device setting. Click Dark: the page is dark, whatever the device setting.
+- Tab to the switch, then use the Left and Right arrow keys: the selection moves and the page changes with it. Focus ring visible in both schemes.
+- Reload the page: neither option is checked and the page follows the device setting again (the choice is not stored).
+- Layout does not change at 375 px or 1280 px for any of the three choices, and the switch fits beside the title row at 375 px with no horizontal scrollbar.
+- With JavaScript disabled, all of the above still works (the switch is CSS-only).
+
 Also add 50 test entries temporarily and confirm the grid wraps without horizontal scroll (constitution Principle IV).
 
 ## 6. Check keyboard and accessibility (FR-010, SC-004, constitution WCAG 2.2 AA)

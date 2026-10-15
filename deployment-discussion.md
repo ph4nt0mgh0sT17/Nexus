@@ -1,7 +1,7 @@
 # Deployment Discussion: Mikrite Nexus Front Page
 
 **Status**: Open. Nothing here is decided. Parked for a future session.
-**Date opened**: 2026-10-15 | **Plan**: [plan.md](plan.md)
+**Date opened**: 2026-10-15 | **Plan**: [plan.md](specs/001-mikrite-nexus-front-page/plan.md)
 
 Points to settle before the first release. The plan does not depend on the answers; they only affect how the built `site/` folder reaches the server.
 
@@ -22,7 +22,7 @@ Points to settle before the first release. The plan does not depend on the answe
 - Only `site/` is served. Specs, tooling and tests stay out of the served output.
 - Production runs nginx (per the tech doc). Local testing matches it with Docker `nginx:alpine`.
 - No third-party requests and no analytics (constitution).
-- The page must work with the performance budget in [research.md](research.md) section 10.
+- The page must work with the performance budget in [research.md](specs/001-mikrite-nexus-front-page/research.md) section 10.
 
 ## Next step
 

@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { existsSync, readFileSync, watch, writeFileSync } from "node:fs";
 import { spawn } from "node:child_process";
 import { dirname, join, resolve } from "node:path";
@@ -175,10 +176,16 @@ export function renderFooter({ year, version }) {
   return `<footer class="site-footer page-container"><p>Copyright © ${escapeHtml(year)} Mikrite<span class="site-footer__version">v${escapeHtml(version)}</span></p></footer>`;
 }
 
+// A short content hash. The page links style.css with this value, so a changed stylesheet gets a new URL.
+export function stylesheetVersion(css) {
+  return createHash("sha256").update(css).digest("hex").slice(0, 10);
+}
+
 export function buildPage(template, apps, options) {
   return template
     .replace("<!-- APPLICATIONS -->", () => renderGrid(apps))
-    .replace("<!-- FOOTER -->", () => renderFooter(options));
+    .replace("<!-- FOOTER -->", () => renderFooter(options))
+    .replace('href="style.css"', () => `href="style.css?v=${options.styleVersion}"`);
 }
 
 function buildSite() {
@@ -186,7 +193,8 @@ function buildSite() {
   assertAssetsExist(apps, siteDir);
   const template = readFileSync(templatePath, "utf8");
   const { version } = JSON.parse(readFileSync(packagePath, "utf8"));
-  const page = buildPage(template, apps, { year: new Date().getFullYear(), version });
+  const styleVersion = stylesheetVersion(readFileSync(join(siteDir, "style.css"), "utf8"));
+  const page = buildPage(template, apps, { year: new Date().getFullYear(), version, styleVersion });
   writeFileSync(join(siteDir, "index.html"), page);
   console.log(`Built site/index.html with ${apps.length} application(s).`);
 }
@@ -207,7 +215,7 @@ function watchSite() {
     shell: true,
   });
   rebuildOnChange();
-  for (const path of [dataPath, templatePath]) {
+  for (const path of [dataPath, templatePath, join(siteDir, "style.css")]) {
     watch(path, rebuildOnChange);
   }
 }

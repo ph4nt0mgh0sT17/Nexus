@@ -25,6 +25,7 @@ Mikrite Nexus is the front page of the platform. It introduces the product by na
 - Q: Do live cards need their own thumbnail? → A: Yes. Every card, preview or live, shows its own WebP thumbnail file. The mock-up remains the reviewable source for preview cards.
 - Q: What must the footer show? → A: A copyright line "Copyright © {year} Mikrite", where the year is the year of the build, and the release version. Local builds show 0.0.0; the first release is 1.0.0.
 - Q: Must links be verified before the page is shown? → A: No, not for this proof of concept. Entries are previews until real applications exist; link checks are added with the first live entry.
+- Q: Should visitors be able to choose light or dark colours themselves? → A: Yes. A theme switch in the header offers Light and Dark. No option is selected by default, and the page then follows the device setting. It must work without JavaScript and is not remembered between visits. A System option is not offered.
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -80,6 +81,7 @@ The product owner and stakeholders need to judge the front page before the appli
 - A large number of applications: the grid must remain usable with up to 50 applications (wrapping rows, no horizontal scrolling).
 - An application with a long name or description: text is truncated or wrapped without breaking the box layout.
 - An application that is unavailable: its box is still shown, marked as unavailable, reachable by keyboard and announced as disabled, and cannot be activated.
+- A browser that does not support the `:has()` selector: the theme switch has no effect, and the page follows the device setting.
 - An unavailable application with no mock-up: its box shows a neutral placeholder marked as "Preview not available" rather than breaking the layout. A preview application always has a mock-up (FR-006).
 - A visitor on a narrow phone screen: boxes stack in a single column with the same content.
 - A visitor who uses only the keyboard or a screen reader: every box is reachable and announces its name.
@@ -101,6 +103,8 @@ The product owner and stakeholders need to judge the front page before the appli
 - **FR-011**: The list of applications MUST be data-driven, so adding or removing an application does not require redesigning the page.
 - **FR-012**: The front page MUST display a footer with the copyright notice "Copyright © {year} Mikrite", where the year is the year of the build.
 - **FR-013**: The front page MUST display the release version in the footer. Local builds show 0.0.0; the first release is 1.0.0.
+- **FR-014**: The front page MUST offer a theme switch in the header with two choices: Light and Dark. Until a choice is made, the page follows the visitor's device setting. Choosing Light or Dark overrides the device setting for the current page view.
+- **FR-015**: The theme switch MUST work without client-side JavaScript and MUST NOT change the layout. Its choice is not stored between visits.
 
 ### Key Entities
 
@@ -112,7 +116,7 @@ The product owner and stakeholders need to judge the front page before the appli
 - Accounts, sign-in and personalisation.
 - The content and behaviour of the applications the boxes lead to.
 - Building the applications themselves; this spec only requires their mock-ups.
-- Hosting, deployment and integration details. The technical stack is set in the plan; deployment is parked in [deployment-discussion.md](deployment-discussion.md).
+- Hosting, deployment and integration details. The technical stack is set in the plan; deployment is parked in [deployment-discussion.md](../../deployment-discussion.md).
 
 ## Assumptions
 

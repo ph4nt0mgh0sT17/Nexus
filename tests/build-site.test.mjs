@@ -11,13 +11,14 @@ import {
   renderCard,
   renderFooter,
   renderGrid,
+  stylesheetVersion,
   validateEntries,
   validateEntry,
 } from "../scripts/build-site.mjs";
 
 const testsDir = dirname(fileURLToPath(import.meta.url));
 const template = readFileSync(join(testsDir, "..", "src", "index.template.html"), "utf8");
-const footerOptions = { year: 2026, version: "0.0.0" };
+const footerOptions = { year: 2026, version: "0.0.0", styleVersion: "abc123" };
 
 const livePart = { id: "tasks", name: "Tasks", description: "Plan your work.", status: "live", href: "/tasks/", thumbnail: "tasks.webp" };
 const previewPart = { id: "notes", name: "Notes", description: "Quick capture.", status: "preview", mockup: "notes.svg", thumbnail: "notes.webp" };
@@ -137,6 +138,30 @@ test("empty list renders the empty state, the title, the description and no scri
   assert.match(page, /<h1>Mikrite <span class="nexus-word">Nexus<\/span><\/h1>/);
   assert.match(page, /<p class="intro-description">/);
   assert.doesNotMatch(page, /<script/i);
+});
+
+test("the theme switch offers Light and Dark as unchecked radios, with no script", () => {
+  const page = buildPage(template, [], footerOptions);
+  assert.match(page, /<legend class="sr-only">Theme<\/legend>/);
+  const radios = page.match(/<input type="radio" name="theme"[^>]*>/g) || [];
+  assert.equal(radios.length, 2);
+  assert.match(radios[0], /class="theme-controller" value="nexus-light"/);
+  assert.match(radios[1], /class="theme-controller" value="nexus-dark"/);
+  assert.doesNotMatch(radios.join(""), /checked/);
+  assert.doesNotMatch(page, /<script/i);
+});
+
+test("the stylesheet link carries the style version, so a changed CSS gets a new URL", () => {
+  const page = buildPage(template, [], footerOptions);
+  assert.match(page, /<link rel="stylesheet" href="style\.css\?v=abc123">/);
+  assert.doesNotMatch(page, /href="style\.css"/);
+});
+
+test("stylesheetVersion is a short hash that changes with the CSS", () => {
+  const version = stylesheetVersion("a{color:red}");
+  assert.match(version, /^[0-9a-f]{10}$/);
+  assert.equal(stylesheetVersion("a{color:red}"), version);
+  assert.notEqual(stylesheetVersion("a{color:blue}"), version);
 });
 
 test("footer shows the year and version", () => {

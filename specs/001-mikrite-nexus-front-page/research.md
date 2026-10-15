@@ -58,9 +58,21 @@ This file records the technical decisions and the reasoning. Conflicts between i
 
 ## 5. Color scheme handling (decided)
 
-**Decision**: Two daisyUI themes, one light and one dark, both defined in `src/input.css`. The light theme is the default and the dark theme is selected by `prefers-color-scheme: dark`. No theme toggle in v1.
+**Decision**: Two daisyUI themes, one light and one dark, both defined in `src/input.css`. By default the dark theme is selected by `prefers-color-scheme: dark` (daisyUI `prefersdark`). A theme switch in the header lets the visitor choose Light or Dark (FR-014). The switch is built on daisyUI's `theme-controller`: two radio inputs, each with the `theme-controller` class and a `value` naming its theme. daisyUI applies a theme with `:root:has(input.theme-controller[value="…"]:checked)`, so no JavaScript runs. Neither radio is checked by default, so no theme is forced and the page follows the device setting (`prefersdark`).
 
-**Rationale**: Required by the constitution. daisyUI's `themes` option with `--prefersdark` handles the switch without JavaScript.
+**Rationale**: The constitution allows JavaScript only where a requirement cannot be met statically (Technology constraints). A switch can be met statically, so no JavaScript is added and no constitution amendment is needed. Choosing a theme without storing it is the trade-off: remembering the choice across visits would need `localStorage`, which needs JavaScript and an amendment with a recorded reason. The choice is therefore reset on each page load. Without a System option, a visitor who picks Light or Dark cannot return to the device setting without reloading the page.
+
+**Browser support**: `:has()` is supported in current Chrome, Edge, Safari and Firefox. Where it is not supported, the switch does nothing and the page follows the device setting (spec edge case).
+
+**Superseded**: The earlier decision "No theme toggle in v1" is replaced by this section.
+
+## 5a. Stylesheet cache busting (decided)
+
+**Decision**: The build computes a short SHA-256 hash of `site/style.css` (first 10 hex characters) and writes it into the page's stylesheet link as `style.css?v={hash}`. Any change to the CSS gives a new URL, so browsers never reuse an old stylesheet.
+
+**Rationale**: A browser may keep `style.css` for as long as the server allows, so a rebuilt page can show new markup with old styles. Versioned URLs fix that without disabling caching. The hash is computed from the generated file, so the link only changes when the CSS changes.
+
+**Limit**: The page itself (`index.html`) is still cached by the browser for as long as the server allows. The server must revalidate HTML (`Cache-Control: no-cache`, see [deployment-discussion.md](../../deployment-discussion.md)). A local server that sends `max-age=3600` keeps the old page for an hour, so use `http-server -c-1` for local work.
 
 ## 6. Motion (decided)
 

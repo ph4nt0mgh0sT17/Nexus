@@ -16,6 +16,7 @@ The page itself has no stored record. It is composed from static markup and the 
 | `emptyMessage` | `index.html` | Shown when `data/apps.json` contains no entries (FR-005) |
 | `footer` | `index.html` | "Copyright © {year} Mikrite" (FR-012). `year` is the build year. |
 | `version` | `package.json` | Release version shown as "v{version}" (FR-013). Local builds use `0.0.0`; the first release is `1.0.0`. |
+| `themeChoice` | Browser, per page view | Unset (default, follows the device setting), `light` or `dark` (FR-014). Set by the header radio group. Not stored in the file or the browser, so it resets on every page load (FR-015). |
 
 ### Application Entry
 
