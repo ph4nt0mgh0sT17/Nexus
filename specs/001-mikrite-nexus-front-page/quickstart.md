@@ -17,7 +17,7 @@ Implementation tasks belong in `tasks.md`.
 
 ```bash
 npm run build
-node --test tests/
+node --test tests/build-site.test.mjs
 ```
 
 Expected: the build succeeds and writes `site/style.css` and `site/index.html`; all tests pass. The tests cover entry validation (see [contracts/app-entry.md](contracts/app-entry.md) field rules), card generation for each status, and the empty state. An invalid entry in `data/apps.json` must make the build fail.
@@ -42,6 +42,7 @@ Open `http://localhost:8080`. Saving a file rebuilds the output; refresh the bro
 
 - The title "Mikrite Nexus" is the largest text on the page.
 - A one-to-two sentence description is visible directly under the title.
+- The footer shows "Copyright © {year} Mikrite" with the current year, and "v0.0.0" for a local build.
 - With no apps configured (temporarily set `data/apps.json` to `[]` and run `npm run build`), the empty state "No applications yet" appears in place of the grid. Restore the file afterwards.
 
 ## 4. Check the boxes (FR-003, FR-004, FR-006, FR-008)
@@ -82,12 +83,12 @@ In DevTools Network with cache disabled:
 
 - Exactly one stylesheet (`style.css`) loads, and no script loads.
 - No third-party requests.
-- Transfer before images is under 100 KB.
+- Transfer before images is under 100 KB, compressed (gzip or brotli).
 - Each mock-up SVG is under 4 KB.
 
 ## 8. Check the broken-link rule (constitution Principle II)
 
-Before any release, every `href` of a `live` entry must resolve. Verify manually or with `curl -I <href>` returning a 2xx or 3xx status.
+Deferred for the proof of concept: all entries are previews, so there are no links to check. Before the first entry with `status: "live"` is published, every `href` must resolve (`curl -I <href>` returning 2xx or 3xx).
 
 ## Expected outcome
 

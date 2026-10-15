@@ -121,4 +121,4 @@ README.md                      # Adds the app entry contract section (Principle 
 1. **Generated output committed** (`site/index.html`, `site/style.css`): decided as committed, to keep the server Node-free. Revisit if generated diffs cause merge noise.
 2. **Production deployment and HTTPS**: open. Deployment model, server OS, domain, HTTPS and nginx configuration are parked in [deployment-discussion.md](deployment-discussion.md). They do not affect this plan's design.
 3. **Brand assets**: none provided. Placeholder mark and palette are used; swap the theme values in `src/input.css` when real assets exist.
-4. **Spec clarification**: [spec.md](spec.md) still says "plain CSS, no build step" in Clarifications and Assumptions. Update those lines to reflect the amendment before tasks are generated.
+4. **Spec clarification**: resolved. [spec.md](spec.md) Clarifications keep the superseded plain-CSS answer marked as such, and Assumptions now state Tailwind CSS v4 with daisyUI v5.

@@ -91,7 +91,7 @@ Constitution Principle IV, plus measurable targets for this plan:
 
 - One stylesheet (`site/style.css`, minified, target under 20 KB; tech doc says "a few tens of KB at most") and no script on the critical path.
 - HTML under 15 KB with the cards generated for 3 apps.
-- Total transfer before images under 100 KB (constitution budget).
+- Total transfer before images under 100 KB, compressed (constitution budget; SC-006).
 - No third-party requests.
 - Mock-up SVGs lazy-loaded, each under 4 KB.
 - Explicit `width` and `height` on images to avoid layout shift.

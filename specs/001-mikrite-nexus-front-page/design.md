@@ -86,24 +86,25 @@ darken the light value by 2-3 lightness points rather than changing the hue.
   `grid-template-columns: repeat(auto-fill, minmax(min(100%, 18rem), 1fr))` and `gap: var(--space-4)`.
   This gives one column on phones with no media query, and wraps without horizontal scroll
   for any number of apps (constitution: 50+ apps).
-- **Card anatomy** (top to bottom): mock-up area at 16:10 with `object-fit: cover`, status chip
+- **Card anatomy** (top to bottom): thumbnail area at 16:10 with `object-fit: cover`, status chip
   overlaid on the top-left, name, description clamped to 3 lines (`-webkit-line-clamp`), and a
   footer with the entry point label ("Open" for live, "Preview" for preview, "Unavailable" for unavailable).
 - **Empty state**: a dashed-border panel, full grid width, with the text "No applications yet"
   and a one-line explanation. Same height rhythm as a card row so the page does not jump.
+- **Footer**: below the grid, one line with "Copyright © {year} Mikrite" and the release version "v{version}". The year and version come from the build. Muted text, same gutters as the page.
 
 ## Card states
 
 | State | Mock-up | Chip | Footer label | Activatable | Visual |
 |---|---|---|---|---|---|
-| `live` | Hidden; shows the live entry's own thumbnail if provided, otherwise the mock-up | "Live" | "Open" | Yes (`<a>`) | Accent spoke on hover |
-| `preview` | Mock-up SVG, lazy | "Preview" | "Coming soon" | No (`aria-disabled`, still focusable) | Slightly dimmed mock-up; spoke stays muted |
+| `live` | The entry's own thumbnail (`thumbnail` file) | "Live" | "Open" | Yes (`<a>`) | Accent spoke on hover |
+| `preview` | WebP thumbnail, lazy (the mock-up SVG is the reviewable source) | "Preview" | "Coming soon" | No (`aria-disabled`, still focusable) | Slightly dimmed mock-up; spoke stays muted |
 | `unavailable` | Mock-up SVG or neutral placeholder | "Unavailable" | "Unavailable" | No | Muted border, no hover lift |
 
-Per spec FR-008, switching from `preview` to `live` changes only the chip, footer and link
-target. It must not change card dimensions.
+Per spec FR-008, switching from `preview` to `live` changes the chip, footer and link target.
+It must not change card dimensions.
 
-Missing mock-up: a neutral placeholder (dot grid plus the text "Preview not available") at the
+Unavailable entry with no mock-up: a neutral placeholder (dot grid plus the text "Preview not available") at the
 same 16:10 size, so the layout does not break (spec edge case).
 
 ## Interaction and motion
@@ -119,15 +120,15 @@ same 16:10 size, so the layout does not break (spec edge case).
   few fixed hues), showing the application's main screen as a simplified wireframe with a
   "Preview" watermark in the corner. No real screenshots of unbuilt applications.
 - Keep under 4 KB each. No embedded raster images or fonts.
+- Every card shows its own thumbnail in the same 16:10 area. Thumbnails are WebP, exported at 1280×800 pixels, with explicit `width` and `height` attributes to prevent layout shift. Thumbnails below the fold are lazy-loaded. No per-file size limit is set.
 - `<img alt="" ...>` is correct here because the card name already conveys the content. The
   preview label is in the chip text and read by screen readers.
 
 ## Accessibility
 
 - Semantic structure: `<header>`, `<main>`, `<h1>` for the title, `<h2>` for the application section, a `<ul>` of cards with one `<li>` per app.
-- Live cards are `<a>` elements whose accessible name is the app name. Preview cards are
-  `<div role="link" aria-disabled="true">` or a `<div>` with `tabindex="0"` and `aria-describedby`
-  pointing to the status text. Choose one in implementation and test with a screen reader.
+- Live cards are `<a>` elements whose accessible name is the app name.
+- Preview and unavailable cards are plain focusable elements: a `<div>` with `tabindex="0"`, `aria-disabled="true"` and `aria-describedby` pointing to the status text. They have no link role and no `href`.
 - Status is text, not color alone (the chip has a label).
 
 ## Brand (open)
