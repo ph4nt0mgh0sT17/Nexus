@@ -14,6 +14,17 @@
 - **[Story]**: Which user story the task belongs to (US1, US2, US3)
 - Every task names the exact file it touches
 
+## Environment Prerequisites
+
+The build toolchain needs Node.js, which is not installed on the development PC by default. Before T001:
+
+- Install Node.js 20 or later (LTS) from nodejs.org. The installer includes npm.
+- Verify with `node -v` and `npm -v` in a new terminal.
+- Docker is not required. It is only an optional way to match production nginx locally ([quickstart.md](quickstart.md) §2). Any static server can serve `site/`.
+- Node is needed only for build-time work: Tailwind, the generator and the tests. The served `site/` output needs no Node.
+
+If Node is not available, T001 to T013 and T035 cannot run. Stop and ask rather than skipping them.
+
 ## Path Conventions
 
 Static site with a build step (see [plan.md](plan.md) Project Structure):
@@ -31,7 +42,7 @@ Static site with a build step (see [plan.md](plan.md) Project Structure):
 **Purpose**: Toolchain and project skeleton
 
 - [ ] T001 Create `package.json` at the repository root with `"version": "0.0.0"`, `"private": true`, and exact (unranged) devDependencies `tailwindcss` 4.x, `@tailwindcss/cli` 4.x and `daisyui` 5.x. No runtime dependencies. Scripts are added in T012.
-- [ ] T002 Run `npm install` at the repository root and commit the resulting `package-lock.json`
+- [ ] T002 Confirm `node -v` and `npm -v` work (see Environment Prerequisites), then run `npm install` at the repository root and commit the resulting `package-lock.json`
 - [ ] T003 [P] Create `.gitignore` at the repository root with `node_modules/` (only if no `.gitignore` exists yet)
 
 ---

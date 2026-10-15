@@ -7,8 +7,8 @@ Implementation tasks belong in `tasks.md`.
 
 ## Prerequisites
 
-- Docker Desktop running (for nginx locally, matching production).
-- Node.js 20 or later (build and tests; the served site needs no Node).
+- Node.js 20 or later, with npm, installed from nodejs.org (LTS). Check with `node -v` and `npm -v`. Required for the build, the tests and `npm run dev`. The served site needs no Node.
+- Docker Desktop is optional. Use it only to match production nginx locally. Any static file server can serve `site/` instead.
 - Dependencies installed once: `npm install` from the repository root.
 - A browser with DevTools (Chrome or Edge recommended).
 - Repository checked out on branch `001-mikrite-nexus-front-page`.
