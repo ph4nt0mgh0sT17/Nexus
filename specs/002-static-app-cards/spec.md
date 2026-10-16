@@ -2,7 +2,7 @@
 
 **Feature Branch**: `002-static-app-cards`
 **Created**: 2026-10-16
-**Status**: Draft
+**Status**: Done (2026-10-16). Implemented and merged to `main` via [PR #6](https://github.com/ph4nt0mgh0sT17/Nexus/pull/6). Open items: live-box link checks are deferred until the first live box exists; the production nginx config check (quickstart §9) is run before the first release.
 **Input**: User description: "Change the way how applications are rendered. I now want to get rid of the applications JSON and want it to be statically in the HTML. It will now be editable by admin on the fly. All other specs will need to be changed as well because We don't want to support up to 50 applications but just a few."
 **Supersedes**: the application-list parts of [001-mikrite-nexus-front-page](../001-mikrite-nexus-front-page/spec.md) (data file, build-time generation, and the 50-application design target). All other behaviour of 001 is unchanged.
 
