@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mikrite Nexus</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="brand">
+        <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+          <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M16 16V4M16 16l10.4-6M16 16l10.4 6M16 16v12M16 16l-10.4 6M16 16l-10.4-6"/>
+          </g>
+          <circle cx="16" cy="16" r="4" fill="currentColor"/>
+        </svg>
+        <span class="brand-name">Mikrite Nexus</span>
+      </div>
+      <fieldset class="theme-switch">
+        <legend class="visually-hidden">Theme</legend>
+        <input type="radio" name="theme" id="theme-light" value="light" checked>
+        <label for="theme-light">Light</label>
+        <input type="radio" name="theme" id="theme-dark" value="dark">
+        <label for="theme-dark">Dark</label>
+      </fieldset>
+    </header>
+
+    <main class="page">
+      <section class="intro">
+        <h1>Mikrite <span class="nexus-word">Nexus</span></h1>
+        <!-- Placeholder text: the owner replaces this description. -->
+        <p class="intro-description">Nexus is the main entry point to the applications in the Mikrite ecosystem. Choose one below to open it.</p>
+      </section>
+
+      <h2 class="section-title">Applications</h2>
+      <ul class="apps">
+        <li class="app app--preview">
+          <div class="app__card" aria-disabled="true" tabindex="0">
+            <img class="app__thumb" src="thumbnails/tasks.webp" width="1280" height="800" alt="">
+            <img class="app__mockup" src="mockups/tasks.svg" width="1280" height="800" alt="Mock-up of the Tasks application">
+            <span class="app__chip">Preview</span>
+            <h3 class="app__name">Tasks</h3>
+            <p class="app__text">Plan, track and finish the work you have in hand.</p>
+          </div>
+        </li>
+        <li class="app app--preview">
+          <div class="app__card" aria-disabled="true" tabindex="0">
+            <img class="app__thumb" src="thumbnails/notes.webp" width="1280" height="800" alt="">
+            <img class="app__mockup" src="mockups/notes.svg" width="1280" height="800" alt="Mock-up of the Notes application">
+            <span class="app__chip">Preview</span>
+            <h3 class="app__name">Notes</h3>
+            <p class="app__text">Quick capture for ideas that are not ready to become tasks.</p>
+          </div>
+        </li>
+        <li class="app app--preview">
+          <div class="app__card" aria-disabled="true" tabindex="0">
+            <img class="app__thumb" src="thumbnails/archive.webp" width="1280" height="800" alt="">
+            <img class="app__mockup" src="mockups/archive.svg" width="1280" height="800" alt="Mock-up of the Archive application">
+            <span class="app__chip">Preview</span>
+            <h3 class="app__name">Archive</h3>
+            <p class="app__text">Store finished and reference material so it stays easy to find.</p>
+          </div>
+        </li>
+      </ul>
+    </main>
+
+    <footer class="site-footer">
+      <p>Copyright © 2026 Mikrite <span class="site-footer__version">Version 0.0.0</span></p>
+    </footer>
+  </body>
+</html>
