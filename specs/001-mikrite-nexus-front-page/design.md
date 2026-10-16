@@ -2,6 +2,8 @@
 
 **Date**: 2026-10-15 | **Plan**: [plan.md](plan.md) | **Research**: [research.md](research.md)
 
+> **Superseded in part by [002-static-app-cards](../002-static-app-cards/spec.md) (2026-10-16).** The grid is designed for up to five applications, not 50. The visual system, card states and empty state are unchanged; the "constitution: 50+ apps" grid note is historical.
+
 Goal: the page should look modern and fast, and not like a template. Speed comes from the
 constraints (no framework, no web fonts, no images on the critical path). The modern look
 comes from the tokens below, the hub motif and deliberate spacing.

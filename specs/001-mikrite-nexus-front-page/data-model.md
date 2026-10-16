@@ -2,6 +2,8 @@
 
 **Date**: 2026-10-15 | **Plan**: [plan.md](plan.md) | **Contract**: [contracts/app-entry.md](contracts/app-entry.md)
 
+> **Superseded in part by [002-static-app-cards](../002-static-app-cards/spec.md) (2026-10-16).** Application entries are no longer read from `data/apps.json`. Each box is written in the front page HTML, and the design supports up to five. The `apps` source row and the storage note below are historical.
+
 ## Entities
 
 ### Front Page (singleton, not stored)

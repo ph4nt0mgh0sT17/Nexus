@@ -2,6 +2,8 @@
 
 **Branch**: `001-mikrite-nexus-front-page` | **Date**: 2026-10-15 | **Spec**: [spec.md](spec.md)
 
+> **Superseded in part by [002-static-app-cards](../002-static-app-cards/spec.md) (2026-10-16).** Application boxes are written directly in the front page HTML. There is no `data/apps.json`, no build-time card generator, and the design target is five applications, not 50. Rows below that describe the data file, the generator, the 50-application scale or the generated-output layout are historical. The plan for 002 replaces them.
+
 **Input**: Feature specification from `/specs/001-mikrite-nexus-front-page/spec.md`, [tech-stack-decisions.md](tech-stack-decisions.md), and the design focus requested for this plan.
 
 ## Summary

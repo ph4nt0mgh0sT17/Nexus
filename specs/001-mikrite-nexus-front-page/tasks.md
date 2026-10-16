@@ -1,5 +1,7 @@
 # Tasks: Mikrite Nexus Front Page
 
+> **Superseded in part by [002-static-app-cards](../002-static-app-cards/spec.md) (2026-10-16).** Tasks that create or validate `data/apps.json` and the generator (T006, T008, T009, T017 to T020, T039) describe the old design. They stay as the record of what was built. New tasks for 002 come from its plan.
+
 **Input**: Design documents from `/specs/001-mikrite-nexus-front-page/`
 
 **Prerequisites**: [plan.md](plan.md) (required), [spec.md](spec.md) (required), [research.md](research.md), [data-model.md](data-model.md), [contracts/app-entry.md](contracts/app-entry.md), [design.md](design.md), [quickstart.md](quickstart.md)
