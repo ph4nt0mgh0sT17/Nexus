@@ -1,14 +1,20 @@
 <!--
 Sync Impact Report
-- Version change: 1.0.0 -> 1.1.0 (MINOR: Technology and Quality Constraints materially expanded)
-- Sections amended: Principle III (Maintainability), Principle V (Architectural Simplicity),
-  Technology and Quality Constraints, Governance (version line)
-- Rationale: The owner chose Tailwind CSS v4 with daisyUI v5 (see
-  specs/001-mikrite-nexus-front-page/tech-stack-decisions.md) for the front page, accepting a
-  build step for the stylesheet only. The amendment limits this to styling tooling at build time.
+- Version change: 1.1.0 -> 2.0.0 (MAJOR: a core technology constraint is dropped)
+- Sections amended: Principle III (Maintainability, styling source line), Principle V
+  (Architectural Simplicity, build-tool exception removed), Technology and Quality Constraints
+  (styling technology), Governance (version line)
+- Rationale: Spec 002-static-app-cards removed the build step for the front page. The page's
+  markup is hand-written in site/index.html, so the only remaining build step was the Tailwind
+  stylesheet. The owner decided to drop Tailwind CSS v4 and daisyUI v5 and use one plain,
+  hand-written CSS file committed with the site. This reverses the 1.1.0 styling approval.
 - Impact on existing applications: None. No application exists yet.
-- Impact on templates under .specify/: The plan template's Constitution Check must reference
-  this amendment for the Tailwind build step.
+- Impact on templates under .specify/: The plan template's Constitution Check and any
+  reference to the Tailwind build step must be updated. Not changed by this amendment.
+- Deferred, not changed here (conflict with spec 002): Principle IV still requires the app list
+  to be data, not markup, and to scale to 50 applications. Technology and Quality Constraints
+  still requires application data compiled from a source file. Spec 002 moves the boxes into
+  the HTML and limits the design to five. A separate amendment is needed for these points.
 - Approval: Repository owner.
 -->
 
@@ -55,9 +61,10 @@ Behavior MUST be verified before it is considered done, and verification MUST be
 
 The codebase MUST remain easy to change by someone who did not write it.
 
-- Each concern MUST live in one place: markup in `site/index.html`, styling source in `src/`
-  (compiled to `site/style.css`), application data in `data/`, and behavior in `js/` only when a
-  requirement cannot be met statically. Duplicating a value across files is a defect.
+- Each concern MUST live in one place: markup in `site/index.html`, styling in
+  `site/style.css` (one hand-written stylesheet), application data in `data/`, and behavior in
+  `js/` only when a requirement cannot be met statically. Duplicating a value across files is a
+  defect.
 - Visual values (colors, spacing, font sizes) MUST be defined as CSS custom properties and
   referenced by name.
 - Dependencies MUST be avoided by default. A new dependency MUST be justified in the pull
@@ -93,8 +100,8 @@ The simplest architecture that meets the current requirements MUST be preferred.
 MUST be justified by a present need, not an anticipated one.
 
 - A new layer (framework, build tool, state store, router) MUST NOT be introduced until a
-  requirement cannot be met by the existing plain HTML, CSS, and JavaScript. The one approved
-  exception is the styling build defined in Technology and Quality Constraints.
+  requirement cannot be met by the existing plain HTML, CSS, and JavaScript. No build-time tool
+  is approved for the hub; any build step requires an amendment to this constitution.
 - Module boundaries MUST follow the ecosystem's real seams: the hub knows an application's
   name, description, link, and status, and nothing else.
 - Shared behavior between applications MUST be introduced only after it exists in at least
@@ -104,10 +111,9 @@ MUST be justified by a present need, not an anticipated one.
 
 ## Technology and Quality Constraints
 
-- The hub MUST be built with HTML5 and CSS3. Styling MUST use Tailwind CSS v4 with daisyUI v5,
-  compiled at build time by the Tailwind CLI into a single static stylesheet. Tailwind and
-  daisyUI are the only approved build-time tools; they MUST be pinned to exact versions and MUST
-  NOT be loaded from a CDN in the served page.
+- The hub MUST be built with HTML5 and CSS3. Styling MUST be one plain, hand-written CSS file
+  committed with the site. No CSS framework, preprocessor, or build-time styling tool is
+  approved, and the served page MUST NOT load any CSS framework from a CDN.
 - Vanilla JavaScript MAY be added only where a requirement cannot be met statically, with a
   recorded reason. The hub currently ships no client-side JavaScript. Any other technology
   requires an amendment to this section.
@@ -159,4 +165,4 @@ or comment conflicts with it, this constitution prevails.
 principles. Periodic reviews (at least once per quarter) SHOULD check that the hub still meets
 the performance budget and that all listed applications resolve.
 
-**Version**: 1.1.0 | **Ratified**: 2026-10-15 | **Last Amended**: 2026-10-15
+**Version**: 2.0.0 | **Ratified**: 2026-10-15 | **Last Amended**: 2026-10-16
