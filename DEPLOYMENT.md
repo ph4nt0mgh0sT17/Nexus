@@ -6,24 +6,13 @@ This guide applies to the whole Nexus project. Only the contents of `site/` are 
 
 ## Build and release
 
-Decided: the release is built on the development machine, published on GitHub, and deployed to the server by hand. A GitHub Actions pipeline can build it later.
+Decided: the release is prepared on the development machine, published on GitHub, and deployed to the server by hand. A GitHub Actions pipeline can use the same steps later. There is no build step: `site/index.html` and `site/style.css` are hand-written and committed (spec 002).
 
-1. **Build** from the tagged commit, using the lockfile so the output is reproducible:
+1. **Check** the release under the production nginx config, as described in [specs/002-static-app-cards/quickstart.md](specs/002-static-app-cards/quickstart.md) §9, and run the admin checklist in [ADMIN.md](ADMIN.md).
+2. **Set the version** before tagging. The footer shows the version as text in `site/index.html` (`Version 0.0.0` locally), so the release changes it by hand, along with the copyright year:
 
-   ```bash
-   npm ci
-   npm run build
-   ```
-
-   This generates `site/index.html` and `site/style.css`. They are not committed. The thumbnails and mockups in `site/` are source assets and are committed.
-2. **Set the version** before tagging. The footer shows the `version` field from `package.json`, so the release must change it:
-
-   ```bash
-   npm version 1.0.0 --no-git-tag-version
-   ```
-
-   Commit the change through a pull request into `main`, as the constitution requires. The flag stops npm from creating its own commit and tag. Local builds stay at `0.0.0`.
-3. **Tag** the merge commit. Keep the tag and `package.json` in step: the footer shows the `package.json` version, and the tag names the release. The footer year is the year of the build, so a rebuild in a new year changes the copyright line.
+   Change the footer in `site/index.html` to the release version (for example `Version 1.0.0`). Commit the change through a pull request into `main`, as the constitution requires. Local edits stay at `0.0.0`.
+3. **Tag** the merge commit. Keep the tag and the footer version in step, so the tag names the release the footer shows. The footer year is the year of the edit, so a change in a new year updates the copyright line.
 
    ```bash
    TAG=v1.0.0
@@ -33,7 +22,7 @@ Decided: the release is built on the development machine, published on GitHub, a
 
    PowerShell: `$TAG = "v1.0.0"`, then the same three `git` lines.
 
-4. **Package** the contents of `site/` (`index.html`, `style.css`, `mockups/`, `thumbnails/`) as a tarball, with a SHA-256 checksum next to it. Do not package the repository root. Run this from the repository root, after `npm run build`.
+4. **Package** the contents of `site/` (`index.html`, `style.css`, `mockups/`, `thumbnails/`) as a tarball, with a SHA-256 checksum next to it. Do not package the repository root. Run this from the repository root.
 
    Bash:
 
@@ -66,7 +55,7 @@ Decided: the release is built on the development machine, published on GitHub, a
 
 6. **Deploy** on the server as described in "Release layout".
 
-**Release check** (before step 3, the tag): confirm every entry in `data/apps.json` with `"status": "live"` has an `href` that resolves to a successful response. The build only checks the link's format, not that it works. Fix or downgrade any broken entry first. This applies to every release, including releases that only change the app list. Manual for now; to be automated with GitHub Actions later.
+**Release check** (before step 3, the tag): link checks for live boxes are deferred until the first live entry is added (spec 002, Clarifications). Application boxes are written in `site/index.html`, so when the first live box exists, confirm every box with `live` status links to a working address, and fix or downgrade any broken box first. Nothing checks the links automatically. This applies to every release, including releases that only change the boxes. Manual for now; to be automated with GitHub Actions later.
 
 The server only downloads and extracts the tarball, and never builds.
 
@@ -230,7 +219,7 @@ If a check fails, roll back at once (below). When the new release is confirmed, 
 ## Why these cache rules
 
 - **HTML uses `no-cache`, not `no-store`.** `no-cache` makes the browser check with the server on each load. `no-store` stops caching completely, which costs more than it helps.
-- **`style.css` can be cached for a year.** The page links `style.css?v=<hash>`, where the hash comes from the file's content. A new build produces a new URL, so an old copy is never used.
+- **`style.css` is revalidated on every load** (`no-cache`), the same as the page. The stylesheet is hand-edited and its URL does not change, so a year-long cache would show old styles (spec 002, research R4).
 - **Images use the default rule.** `mockups/` and `thumbnails/` URLs do not change, so they are revalidated on each load rather than cached for a long time.
 
 ## Testing in Docker
@@ -247,7 +236,7 @@ The commands below are written for a Windows development machine. Bash versions 
 2. **Start Docker Desktop** and wait until it reports that Docker is running.
 3. **Check it works**: run `docker version` in PowerShell. You should see both a Client and a Server section. If only the Client appears, Docker Desktop is not running.
 4. **Run every command from the repository root**, the folder that contains `deploy/` and `site/`. The commands mount paths relative to that folder. The repository is on drive C:, which Docker Desktop shares by default.
-5. **Build first** with `npm run build` for step 2 and step 3, so that `site/index.html` and `site/style.css` exist.
+5. **No build is needed.** `site/index.html` and `site/style.css` are committed, so the folder is ready to serve.
 
 ### 1. Check the config syntax
 
@@ -270,7 +259,7 @@ docker run --rm -v "${PWD}/deploy/nginx/nexus.conf:/etc/nginx/conf.d/default.con
 
 What it does: serves the built site with the production config on `http://localhost:8080`. In the command, `-p 8080:80` maps your port 8080 to nginx's port 80. The first `-v` mounts `site/` read-only at the path the config uses (`/var/www/nexus/current`), so the config needs no changes. The other two `-v` lines replace the Alpine image's default config with ours.
 
-Build first (`npm run build`). Leave this running in its own terminal. Stop it with **Ctrl+C**. Because of `--rm`, the container is removed when it stops, so nothing is left behind.
+Leave this running in its own terminal. Stop it with **Ctrl+C**. Because of `--rm`, the container is removed when it stops, so nothing is left behind.
 
 ```bash
 docker run --rm -p 8080:80 \
@@ -292,19 +281,7 @@ Open http://localhost:8080 in a browser. The page should look the same as the pr
 
 What it does: asks the running container for response headers and checks the values. Run it in a second terminal while step 2 is running. On Windows, use `curl.exe`: in PowerShell, `curl` is an alias for a different command.
 
-Get the current stylesheet hash from the built page:
-
-PowerShell:
-
-```powershell
-(Select-String -Path site\index.html -Pattern 'style\.css\?v=[0-9a-f]+').Matches.Value
-```
-
-Bash:
-
-```bash
-grep -o 'style.css?v=[^"]*' site/index.html
-```
+The stylesheet is linked as `style.css` with no version query, so it is revalidated like the page (research R4).
 
 Then check the headers. Each command has the expected result in its comment.
 
@@ -314,8 +291,8 @@ PowerShell:
 curl.exe -sI http://localhost:8080/ | Select-String 'cache-control'
 # expect: no-cache
 
-curl.exe -sI "http://localhost:8080/style.css?v=<hash>" | Select-String 'cache-control'
-# expect: public, max-age=31536000, immutable
+curl.exe -sI http://localhost:8080/style.css | Select-String 'cache-control'
+# expect: no-cache
 
 curl.exe -sI http://localhost:8080/mockups/notes.svg | Select-String 'cache-control'
 # expect: no-cache
@@ -336,8 +313,8 @@ Bash:
 curl -sI http://localhost:8080/ | grep -i cache-control
 # expect: no-cache
 
-curl -sI "http://localhost:8080/style.css?v=<hash>" | grep -i cache-control
-# expect: public, max-age=31536000, immutable
+curl -sI http://localhost:8080/style.css | grep -i cache-control
+# expect: no-cache
 
 curl -sI http://localhost:8080/mockups/notes.svg | grep -i cache-control
 # expect: no-cache

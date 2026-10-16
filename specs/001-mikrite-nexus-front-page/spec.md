@@ -14,10 +14,10 @@ Mikrite Nexus is the front page of the platform. It introduces the product by na
 ### Session 2026-10-15
 
 - Q: Should the page styling use plain CSS with custom properties, or Tailwind? → A: Plain CSS with custom properties (no CSS framework, no build step) *(superseded)*
-- Q: Should the page styling use plain CSS with custom properties, or Tailwind? → A: Tailwind CSS v4 with daisyUI v5, compiled at build time into a static stylesheet. Owner decision; the constitution was amended to 1.1.0 to allow this build-time tooling.
+- Q: Should the page styling use plain CSS with custom properties, or Tailwind? → A: Tailwind CSS v4 with daisyUI v5, compiled at build time into a static stylesheet. Owner decision; the constitution was amended to 1.1.0 to allow this build-time tooling. *(superseded by [002-static-app-cards](../002-static-app-cards/spec.md): plain CSS, no framework, no build step)*
 - Q: How should stakeholders reach the front page to review the mock-ups before it is deployed? → A: Local review only. Reviewers run the built site on their own machine; no hosted review URL is required for this feature.
 - Q: Should preview and unavailable boxes be reachable with the Tab key, even though they cannot be opened? → A: Yes. They are reachable and announced as disabled; activating them does nothing.
-- Q: How many applications should the front page be designed to handle without the layout breaking? → A: Design for up to 50 applications. The first delivery is expected to list at most three.
+- Q: How many applications should the front page be designed to handle without the layout breaking? → A: Design for up to 50 applications. The first delivery is expected to list at most three. *(superseded by [002-static-app-cards](../002-static-app-cards/spec.md): design for up to five)*
 - Q: Is it acceptable to use a placeholder logo and colour palette for the first review, with real brand assets added later? → A: Yes. The first review uses a placeholder mark and palette; brand values are swapped in later without a layout change.
 - Q: What is the largest total download the front page may need before images, on first load? → A: 100 KB, the page-weight budget set by the constitution.
 - Q: Must every application that is not built have a mock-up? → A: Every application with status preview must have one (FR-006). An unavailable application may show the neutral placeholder if it has no mock-up.
@@ -78,7 +78,7 @@ The product owner and stakeholders need to judge the front page before the appli
 
 ### Edge Cases
 
-- A large number of applications: the grid must remain usable with up to 50 applications (wrapping rows, no horizontal scrolling).
+- A large number of applications: the grid must remain usable with up to five applications (wrapping rows, no horizontal scrolling). *(revised from 50 by [002-static-app-cards](../002-static-app-cards/spec.md))*
 - An application with a long name or description: text is truncated or wrapped without breaking the box layout.
 - An application that is unavailable: its box is still shown, marked as unavailable, reachable by keyboard and announced as disabled, and cannot be activated.
 - A browser that does not support the `:has()` selector: the theme switch has no effect, and the page follows the device setting.
@@ -100,10 +100,10 @@ The product owner and stakeholders need to judge the front page before the appli
 - **FR-008**: When an application is built, its box MUST switch to the live application entry (its link becomes active) without a layout change.
 - **FR-009**: The layout MUST work on desktop and phone-sized screens without horizontal scrolling.
 - **FR-010**: Application boxes MUST be reachable by keyboard and expose their name to assistive technology. Live boxes MUST be activatable by keyboard. Preview and unavailable boxes MUST be announced as disabled and MUST do nothing when activated.
-- **FR-011**: The list of applications MUST be data-driven, so adding or removing an application does not require redesigning the page.
+- **FR-011**: The list of applications MUST be easy to change, so adding or removing an application does not require redesigning the page. *(Revised by [002-static-app-cards](../002-static-app-cards/spec.md): the boxes are written directly in the front page HTML; there is no data file and no build step.)*
 - **FR-012**: The front page MUST display a footer with the copyright notice "Copyright © {year} Mikrite", where the year is the year of the build.
 - **FR-013**: The front page MUST display the release version in the footer. Local builds show 0.0.0; the first release is 1.0.0.
-- **FR-014**: The front page MUST offer a theme switch in the header with two choices: Light and Dark. Until a choice is made, the page follows the visitor's device setting. Choosing Light or Dark overrides the device setting for the current page view.
+- **FR-014**: The front page MUST offer a theme switch in the header with two choices: Light and Dark. *(Superseded in part by [002-static-app-cards](../002-static-app-cards/spec.md) FR-013: Light is ticked by default, so the device setting no longer applies on first load.)* Until a choice is made, the page follows the visitor's device setting. Choosing Light or Dark overrides the device setting for the current page view.
 - **FR-015**: The theme switch MUST work without client-side JavaScript and MUST NOT change the layout. Its choice is not stored between visits.
 
 ### Key Entities
@@ -120,10 +120,10 @@ The product owner and stakeholders need to judge the front page before the appli
 
 ## Assumptions
 
-- The first delivery is the front page with mock-ups for each listed application; the applications themselves will be built later. The first delivery is expected to list at most three applications, while the design supports up to 50.
+- The first delivery is the front page with mock-ups for each listed application; the applications themselves will be built later. The first delivery is expected to list at most three applications, while the design supports up to five. *(revised from 50 by [002-static-app-cards](../002-static-app-cards/spec.md))*
 - Application boxes are shown in a single flat grid; no categories or ordering rules are required in this iteration.
 - The description is written by the product owner and is not user-editable on the page.
-- Visual styling uses Tailwind CSS v4 with daisyUI v5, compiled at build time into a static stylesheet, with no client-side JavaScript (see Clarifications). Colours, typography and imagery are refined in the planning phase. The first review uses a placeholder logo mark and colour palette (see Clarifications).
+- Visual styling uses Tailwind CSS v4 with daisyUI v5, compiled at build time into a static stylesheet, with no client-side JavaScript (see Clarifications). *(superseded by [002-static-app-cards](../002-static-app-cards/spec.md): one plain, hand-written CSS file with no framework and no build step)* Colours, typography and imagery are refined in the planning phase. The first review uses a placeholder logo mark and colour palette (see Clarifications).
 
 - The first three entries are all status preview, with these names and descriptions: Tasks ("Plan, track and finish the work you have in hand."), Notes ("Quick capture for ideas that are not ready to become tasks.") and Archive ("Store finished and reference material so it stays easy to find.").
 - Entries start as mock-ups and are switched to live later by adding a real `href`.
@@ -137,12 +137,12 @@ The product owner and stakeholders need to judge the front page before the appli
 - **SC-002**: The title, description and application area are fully visible without scrolling on a common desktop screen and a common phone screen.
 - **SC-003**: Stakeholders can review every application's mock-up on the front page with no application built.
 - **SC-004**: Every application box can be reached using only the keyboard; every live box can be activated with the keyboard, and every preview or unavailable box is announced as disabled.
-- **SC-005**: Adding an application entry requires no change to the page layout, up to 50 applications.
+- **SC-005**: Adding an application entry requires no change to the page layout, up to five applications. *(revised from 50 by [002-static-app-cards](../002-static-app-cards/spec.md))*
 - **SC-006**: On first load, the page transfers no more than 100 KB before images, measured compressed (gzip or brotli).
 
 ## Open Questions for Planning
 
-Resolved in [plan.md](plan.md) and [research.md](research.md): the technology stack, where entries are stored (`data/apps.json`), and the mock-up format (hand-authored SVG).
+Resolved in [plan.md](plan.md) and [research.md](research.md): the technology stack, where entries are stored (originally `data/apps.json`; now written directly in the front page HTML, per [002-static-app-cards](../002-static-app-cards/spec.md)), and the mock-up format (hand-authored SVG).
 
 Still open:
 

@@ -2,6 +2,8 @@
 
 **Date**: 2026-10-15 | **Plan**: [plan.md](plan.md) | **Spec**: [spec.md](spec.md)
 
+> **Superseded in part by [002-static-app-cards](../002-static-app-cards/spec.md) (2026-10-16).** The application list is no longer `data/apps.json` with a build-time generator; boxes are written directly in the front page HTML, for up to five applications. Decisions on the data file, the generator and the 50-application budget (sections on storage and scale) are historical.
+
 This file records the technical decisions and the reasoning. Conflicts between inputs are resolved here, with the resolution owned by the repository owner.
 
 ## 1. Styling stack (resolved)

@@ -1,14 +1,19 @@
 <!--
 Sync Impact Report
-- Version change: 1.0.0 -> 1.1.0 (MINOR: Technology and Quality Constraints materially expanded)
-- Sections amended: Principle III (Maintainability), Principle V (Architectural Simplicity),
-  Technology and Quality Constraints, Governance (version line)
-- Rationale: The owner chose Tailwind CSS v4 with daisyUI v5 (see
-  specs/001-mikrite-nexus-front-page/tech-stack-decisions.md) for the front page, accepting a
-  build step for the stylesheet only. The amendment limits this to styling tooling at build time.
+- Version change: 3.0.0 -> 4.0.0 (MAJOR: an existing MUST rule is redefined. The hub no longer
+  must respect prefers-color-scheme by default. Chosen as MAJOR under the policy, not MINOR)
+- Sections amended: Technology and Quality Constraints (prefers-color-scheme rule), Governance
+  (version line)
+- Rationale: Spec 002-static-app-cards, FR-013. The theme switch starts with Light ticked, so a
+  visitor whose device is set to dark sees the light page first. The device setting applies only
+  after the visitor chooses Dark in the switch. The owner chose Light as the default.
+- Earlier amendments in this file's history, kept for reference:
+  - 3.0.0 (MAJOR): Principle IV redefined; application boxes are static HTML, up to five apps.
+  - 2.0.0 (MAJOR): Tailwind CSS and daisyUI dropped; styling is one plain, hand-written CSS file.
+  - 1.1.0 (MINOR): Tailwind and daisyUI allowed at build time (now reversed by 2.0.0).
 - Impact on existing applications: None. No application exists yet.
-- Impact on templates under .specify/: The plan template's Constitution Check must reference
-  this amendment for the Tailwind build step.
+- Impact on templates under .specify/: None found that restate this rule. Not changed.
+- Deferred: None.
 - Approval: Repository owner.
 -->
 
@@ -55,9 +60,10 @@ Behavior MUST be verified before it is considered done, and verification MUST be
 
 The codebase MUST remain easy to change by someone who did not write it.
 
-- Each concern MUST live in one place: markup in `site/index.html`, styling source in `src/`
-  (compiled to `site/style.css`), application data in `data/`, and behavior in `js/` only when a
-  requirement cannot be met statically. Duplicating a value across files is a defect.
+- Each concern MUST live in one place: markup in `site/index.html`, styling in
+  `site/style.css` (one hand-written stylesheet), application data in `data/`, and behavior in
+  `js/` only when a requirement cannot be met statically. Duplicating a value across files is a
+  defect.
 - Visual values (colors, spacing, font sizes) MUST be defined as CSS custom properties and
   referenced by name.
 - Dependencies MUST be avoided by default. A new dependency MUST be justified in the pull
@@ -73,14 +79,15 @@ The codebase MUST remain easy to change by someone who did not write it.
 
 The hub MUST support growth in the number of applications without structural rewrites.
 
-- The app list MUST be data, not markup. Adding an application MUST NOT require changing layout
-  or styling code.
+- Application boxes MUST be written as static HTML in the served front page. Adding or removing
+  an application MUST NOT require changing layout or styling code, only the boxes themselves.
 - The hub MUST remain static and MUST NOT depend on a server to render its core content.
   This keeps it cheap, fast, and independent of any one application's availability.
 - Each application MUST own its own runtime, data, and deployment. The hub MUST NOT import or
   execute application code, and MUST NOT depend on another application being online to render.
-- The page MUST stay usable with a list of at least 50 applications: the grid MUST remain
-  responsive, and search or filtering (when present) MUST respond without a noticeable delay.
+- The page MUST stay usable with up to five applications: the grid MUST wrap without horizontal
+  scrolling at phone and desktop widths, and a single application MUST NOT stretch across the
+  page. Designs for more applications are out of scope until an amendment says otherwise.
 - Performance budgets SHOULD be set and checked: the hub SHOULD load its critical content with
   no more than one stylesheet and one script, and total transfer SHOULD stay under 100 KB before
   images.
@@ -93,8 +100,8 @@ The simplest architecture that meets the current requirements MUST be preferred.
 MUST be justified by a present need, not an anticipated one.
 
 - A new layer (framework, build tool, state store, router) MUST NOT be introduced until a
-  requirement cannot be met by the existing plain HTML, CSS, and JavaScript. The one approved
-  exception is the styling build defined in Technology and Quality Constraints.
+  requirement cannot be met by the existing plain HTML, CSS, and JavaScript. No build-time tool
+  is approved for the hub; any build step requires an amendment to this constitution.
 - Module boundaries MUST follow the ecosystem's real seams: the hub knows an application's
   name, description, link, and status, and nothing else.
 - Shared behavior between applications MUST be introduced only after it exists in at least
@@ -104,19 +111,20 @@ MUST be justified by a present need, not an anticipated one.
 
 ## Technology and Quality Constraints
 
-- The hub MUST be built with HTML5 and CSS3. Styling MUST use Tailwind CSS v4 with daisyUI v5,
-  compiled at build time by the Tailwind CLI into a single static stylesheet. Tailwind and
-  daisyUI are the only approved build-time tools; they MUST be pinned to exact versions and MUST
-  NOT be loaded from a CDN in the served page.
+- The hub MUST be built with HTML5 and CSS3. Styling MUST be one plain, hand-written CSS file
+  committed with the site. No CSS framework, preprocessor, or build-time styling tool is
+  approved, and the served page MUST NOT load any CSS framework from a CDN.
 - Vanilla JavaScript MAY be added only where a requirement cannot be met statically, with a
   recorded reason. The hub currently ships no client-side JavaScript. Any other technology
   requires an amendment to this section.
-- Application data (the app list) MUST live in a source file that is compiled into the static
-  output at build time. The served page MUST NOT fetch application data at runtime.
+- Application boxes MUST be hand-written HTML in the served page (`site/index.html`). The served
+  page MUST NOT fetch application data at runtime, and no build step generates the boxes.
 - The hub MUST work in the current stable release and the previous major release of Chrome,
   Edge, Firefox, and Safari.
 - The hub MUST be keyboard-operable and meet WCAG 2.2 AA for contrast and focus visibility.
-- The hub MUST respect `prefers-reduced-motion` and `prefers-color-scheme`.
+- The hub MUST respect `prefers-reduced-motion`. The hub MUST start with the Light theme ticked
+  (spec 002-static-app-cards, FR-013), so a visitor's `prefers-color-scheme` setting applies only
+  after the visitor chooses Dark in the theme switch.
 - Secrets, tokens, and personal data MUST NOT be committed to the repository, and the hub MUST
   NOT collect analytics or personal data without an explicit amendment to this constitution.
 - Third-party scripts and stylesheets MUST NOT be loaded from the page without a recorded
@@ -159,4 +167,4 @@ or comment conflicts with it, this constitution prevails.
 principles. Periodic reviews (at least once per quarter) SHOULD check that the hub still meets
 the performance budget and that all listed applications resolve.
 
-**Version**: 1.1.0 | **Ratified**: 2026-10-15 | **Last Amended**: 2026-10-15
+**Version**: 4.0.0 | **Ratified**: 2026-10-15 | **Last Amended**: 2026-10-16

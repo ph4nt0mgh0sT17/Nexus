@@ -2,6 +2,8 @@
 
 **Date**: 2026-10-15 | **Plan**: [plan.md](plan.md) | **Data**: [data-model.md](data-model.md) | **Contract**: [contracts/app-entry.md](contracts/app-entry.md)
 
+> **Superseded in part by [002-static-app-cards](../002-static-app-cards/spec.md) (2026-10-16).** Editing `data/apps.json` and running the build no longer applies. Steps about the data file, the build validation and the 50-entry scale test are replaced by the admin checklist and the five-box check defined in 002.
+
 This guide proves the feature works end to end. It is a run and check guide, not a build guide.
 Implementation tasks belong in `tasks.md`.
 

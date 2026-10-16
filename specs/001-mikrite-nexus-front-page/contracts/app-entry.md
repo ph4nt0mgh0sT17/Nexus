@@ -2,6 +2,8 @@
 
 **Version**: 1.0.0 | **Date**: 2026-10-15 | **Owner**: Nexus hub
 
+> **Superseded by [002-static-app-cards](../../002-static-app-cards/spec.md) (2026-10-16).** This contract for a JSON array in `data/apps.json` is withdrawn. An application box is now a block of HTML in the front page, with the same fields (name, description, status, thumbnail, mock-up or link) written by hand. The field rules below stay as a guide for that markup; the build-time validation and the file-based entry no longer apply.
+
 This is the public contract for adding an application to the Nexus front page. Constitution
 Principle III requires it to be documented in the README before a second application relies on it.
 Any breaking change must be called out in the pull request and reflected here.
