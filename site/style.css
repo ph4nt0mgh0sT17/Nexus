@@ -190,7 +190,7 @@ body {
 /* Footer */
 .site-footer {
   max-width: 64rem;
-  margin: 0 auto;
+  margin: 2rem auto;
   padding: 2rem 1rem 2.5rem;
   border-top: 1px solid var(--border);
   color: var(--muted);
