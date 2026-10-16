@@ -103,7 +103,7 @@ The product owner and stakeholders need to judge the front page before the appli
 - **FR-011**: The list of applications MUST be easy to change, so adding or removing an application does not require redesigning the page. *(Revised by [002-static-app-cards](../002-static-app-cards/spec.md): the boxes are written directly in the front page HTML; there is no data file and no build step.)*
 - **FR-012**: The front page MUST display a footer with the copyright notice "Copyright © {year} Mikrite", where the year is the year of the build.
 - **FR-013**: The front page MUST display the release version in the footer. Local builds show 0.0.0; the first release is 1.0.0.
-- **FR-014**: The front page MUST offer a theme switch in the header with two choices: Light and Dark. Until a choice is made, the page follows the visitor's device setting. Choosing Light or Dark overrides the device setting for the current page view.
+- **FR-014**: The front page MUST offer a theme switch in the header with two choices: Light and Dark. *(Superseded in part by [002-static-app-cards](../002-static-app-cards/spec.md) FR-013: Light is ticked by default, so the device setting no longer applies on first load.)* Until a choice is made, the page follows the visitor's device setting. Choosing Light or Dark overrides the device setting for the current page view.
 - **FR-015**: The theme switch MUST work without client-side JavaScript and MUST NOT change the layout. Its choice is not stored between visits.
 
 ### Key Entities

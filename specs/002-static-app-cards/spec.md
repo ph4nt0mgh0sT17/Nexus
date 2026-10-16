@@ -23,6 +23,8 @@ The design target is now a few applications, not 50. The page must look right wi
 - Q: Which file is the source of the front page: the committed `site/index.html`, or a separate template? → A: `site/index.html` is the only source. It is committed and edited by hand. The template `src/index.template.html` and the generator that filled it are removed, since nothing is generated for the page's markup any more.
 - Q: Should the styling keep Tailwind CSS and daisyUI, which needed a build step? → A: No. Tailwind and daisyUI are dropped. The styling is one plain CSS file, committed with the site. This supersedes the Tailwind decision recorded in 001 (Clarifications and Assumptions). The constitution's technology constraint, which requires Tailwind v4 and daisyUI v5 at build time, must be amended before this change is planned.
 - Q: Who checks that live links resolve before a release, now that there is no data file? → A: Nobody for now. Link checks are added with the first live entry, as 001 already states. The release-check rule in `deployment-discussion.md` (point 8) must be updated to match when that happens.
+- Q: Which theme should the switch show by default? → A: Light. The Light option is ticked on first load, so the page no longer follows the visitor's device setting until a choice is made. This supersedes the device-setting default in 001 FR-014. *(Recorded after implementation; see FR-013.)*
+- Q: Where does the admin checklist live, given FR-008 says "kept with the front page"? → A: In `ADMIN.md` at the repository root, next to the page, not served. Choosing the root keeps it out of the served `site/` folder with no extra server rules. *(Recorded from analysis gap G6.)*
 - Q: Should a live box open its application in the same tab or in a new tab? → A: The same tab, like any normal link. A visitor returns to the front page with the browser's back button.
 
 ## User Scenarios & Testing *(mandatory)*
@@ -97,6 +99,7 @@ An application that is not built yet shows a labelled mock-up instead of a live 
 - **FR-009**: The page MUST contain no client-side script for rendering the boxes. The boxes are plain HTML.
 - **FR-010**: Editing the boxes MUST NOT change the title, description, theme switch, footer or page-weight behaviour defined in 001 (FR-001, FR-002, FR-012 to FR-015 of 001).
 - **FR-011**: Application entries MUST NOT be stored in a JSON file, and no requirement in this feature depends on one.
+- **FR-013**: The theme switch MUST have Light ticked by default. Choosing Dark overrides it for the page view. This supersedes the device-setting default in 001 FR-014.
 - **FR-012**: The page's styling MUST be one plain CSS file, committed with the site. No CSS framework, preprocessor or build step is used for the page, and no change to the content of a box requires any build.
 
 ### Key Entities
